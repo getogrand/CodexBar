@@ -1524,7 +1524,7 @@ extension StatusItemController {
             from: self.store.openAIDashboard?.usageBreakdown ?? [])
         guard !breakdown.isEmpty else { return nil }
         if let width {
-            return self.makeHydratedHostedSubviewMenu(chartID: Self.usageBreakdownChartID, width: width)
+            return self.makeHostedSubviewPlaceholderMenu(chartID: Self.usageBreakdownChartID, width: width)
         }
         return self.makeHostedSubviewPlaceholderMenu(chartID: Self.usageBreakdownChartID)
     }
@@ -1532,7 +1532,7 @@ extension StatusItemController {
     private func makeCreditsHistorySubmenu(width: CGFloat? = nil) -> NSMenu? {
         guard !(self.store.openAIDashboard?.dailyBreakdown ?? []).isEmpty else { return nil }
         if let width {
-            return self.makeHydratedHostedSubviewMenu(chartID: Self.creditsHistoryChartID, width: width)
+            return self.makeHostedSubviewPlaceholderMenu(chartID: Self.creditsHistoryChartID, width: width)
         }
         return self.makeHostedSubviewPlaceholderMenu(chartID: Self.creditsHistoryChartID)
     }
@@ -1541,7 +1541,7 @@ extension StatusItemController {
         guard [.codex, .claude, .vertexai, .bedrock].contains(provider) else { return nil }
         guard self.store.tokenSnapshot(for: provider)?.daily.isEmpty == false else { return nil }
         if let width {
-            return self.makeHydratedHostedSubviewMenu(
+            return self.makeHostedSubviewPlaceholderMenu(
                 chartID: Self.costHistoryChartID,
                 provider: provider,
                 width: width)
@@ -1552,7 +1552,7 @@ extension StatusItemController {
     private func makeStorageBreakdownSubmenu(provider: UsageProvider, width: CGFloat? = nil) -> NSMenu? {
         guard self.store.storageFootprint(for: provider)?.components.isEmpty == false else { return nil }
         if let width {
-            return self.makeHydratedHostedSubviewMenu(
+            return self.makeHostedSubviewPlaceholderMenu(
                 chartID: Self.storageBreakdownID,
                 provider: provider,
                 width: width)

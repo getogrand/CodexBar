@@ -18,21 +18,22 @@ extension StatusItemController {
         }
     }
 
-    func makeHostedSubviewPlaceholderMenu(chartID: String, provider: UsageProvider? = nil) -> NSMenu {
+    func makeHostedSubviewPlaceholderMenu(
+        chartID: String,
+        provider: UsageProvider? = nil,
+        width: CGFloat? = nil) -> NSMenu
+    {
         let submenu = NSMenu()
         submenu.autoenablesItems = false
+        if let width {
+            submenu.minimumWidth = width
+        }
         submenu.delegate = self
         let chartItem = NSMenuItem()
         chartItem.isEnabled = true
         chartItem.representedObject = chartID
         chartItem.toolTip = provider?.rawValue
         submenu.addItem(chartItem)
-        return submenu
-    }
-
-    func makeHydratedHostedSubviewMenu(chartID: String, provider: UsageProvider? = nil, width: CGFloat) -> NSMenu {
-        let submenu = self.makeHostedSubviewPlaceholderMenu(chartID: chartID, provider: provider)
-        self.hydrateHostedSubviewMenuIfNeeded(submenu, width: width)
         return submenu
     }
 

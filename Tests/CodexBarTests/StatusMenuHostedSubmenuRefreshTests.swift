@@ -51,12 +51,14 @@ struct StatusMenuHostedSubmenuRefreshTests {
         #expect(NSStringFromSelector(submenuAction) == "submenuAction:")
         #expect((costItem.target as? NSMenu) === submenu)
         #expect(submenu.items.first?.representedObject as? String == StatusItemController.costHistoryChartID)
-        #expect(submenu.items.first?.view != nil)
+        #expect(submenu.minimumWidth >= StatusItemController.menuCardBaseWidth)
+        #expect(submenu.items.first?.view == nil)
 
         StatusItemController.setMenuRefreshEnabledForTesting(true)
         controller.menuWillOpen(submenu)
         let submenuKey = ObjectIdentifier(submenu)
         #expect(controller.openMenus[submenuKey] === submenu)
+        #expect(submenu.items.first?.view != nil)
 
         let oldParentVersion = try #require(controller.menuVersions[parentKey])
         controller.menuContentVersion &+= 1

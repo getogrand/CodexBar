@@ -35,7 +35,7 @@ extension StatusItemController {
         guard self.store.supportsPlanUtilizationHistory(for: provider) else { return nil }
         guard !self.store.shouldHidePlanUtilizationMenuItem(for: provider) else { return nil }
         if let width {
-            return self.makeHydratedHostedSubviewMenu(
+            return self.makeHostedSubviewPlaceholderMenu(
                 chartID: Self.usageHistoryChartID,
                 provider: provider,
                 width: width)
