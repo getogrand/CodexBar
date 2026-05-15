@@ -20,16 +20,23 @@ extension StatusItemController {
 
     func makeHostedSubviewPlaceholderMenu(chartID: String, provider: UsageProvider? = nil) -> NSMenu {
         let submenu = NSMenu()
+        submenu.autoenablesItems = false
         submenu.delegate = self
         let chartItem = NSMenuItem()
-        chartItem.isEnabled = false
+        chartItem.isEnabled = true
         chartItem.representedObject = chartID
         chartItem.toolTip = provider?.rawValue
         submenu.addItem(chartItem)
         return submenu
     }
 
-    func hydrateHostedSubviewMenuIfNeeded(_ menu: NSMenu) {
+    func makeHydratedHostedSubviewMenu(chartID: String, provider: UsageProvider? = nil, width: CGFloat) -> NSMenu {
+        let submenu = self.makeHostedSubviewPlaceholderMenu(chartID: chartID, provider: provider)
+        self.hydrateHostedSubviewMenuIfNeeded(submenu, width: width)
+        return submenu
+    }
+
+    func hydrateHostedSubviewMenuIfNeeded(_ menu: NSMenu, width requestedWidth: CGFloat? = nil) {
         guard let placeholder = menu.items.first,
               menu.items.count == 1,
               placeholder.view == nil,
@@ -38,7 +45,7 @@ extension StatusItemController {
             return
         }
 
-        let width = self.renderedMenuWidth(for: menu.supermenu ?? menu)
+        let width = requestedWidth ?? self.renderedMenuWidth(for: menu.supermenu ?? menu)
         menu.removeAllItems()
 
         let didHydrate: Bool = switch chartID {
@@ -99,7 +106,7 @@ extension StatusItemController {
 
         if !Self.menuCardRenderingEnabled {
             let chartItem = NSMenuItem()
-            chartItem.isEnabled = false
+            chartItem.isEnabled = true
             chartItem.representedObject = Self.usageBreakdownChartID
             submenu.addItem(chartItem)
             return true
@@ -113,7 +120,7 @@ extension StatusItemController {
 
         let chartItem = NSMenuItem()
         chartItem.view = hosting
-        chartItem.isEnabled = false
+        chartItem.isEnabled = true
         chartItem.representedObject = Self.usageBreakdownChartID
         submenu.addItem(chartItem)
         return true
@@ -126,7 +133,7 @@ extension StatusItemController {
 
         if !Self.menuCardRenderingEnabled {
             let chartItem = NSMenuItem()
-            chartItem.isEnabled = false
+            chartItem.isEnabled = true
             chartItem.representedObject = Self.creditsHistoryChartID
             submenu.addItem(chartItem)
             return true
@@ -140,7 +147,7 @@ extension StatusItemController {
 
         let chartItem = NSMenuItem()
         chartItem.view = hosting
-        chartItem.isEnabled = false
+        chartItem.isEnabled = true
         chartItem.representedObject = Self.creditsHistoryChartID
         submenu.addItem(chartItem)
         return true
@@ -157,7 +164,7 @@ extension StatusItemController {
 
         if !Self.menuCardRenderingEnabled {
             let chartItem = NSMenuItem()
-            chartItem.isEnabled = false
+            chartItem.isEnabled = true
             chartItem.representedObject = Self.costHistoryChartID
             submenu.addItem(chartItem)
             return true
@@ -175,7 +182,7 @@ extension StatusItemController {
 
         let chartItem = NSMenuItem()
         chartItem.view = hosting
-        chartItem.isEnabled = false
+        chartItem.isEnabled = true
         chartItem.representedObject = Self.costHistoryChartID
         submenu.addItem(chartItem)
         return true
@@ -194,7 +201,7 @@ extension StatusItemController {
 
         if !Self.menuCardRenderingEnabled {
             let item = NSMenuItem()
-            item.isEnabled = false
+            item.isEnabled = true
             item.representedObject = Self.storageBreakdownID
             item.toolTip = provider.rawValue
             submenu.addItem(item)
